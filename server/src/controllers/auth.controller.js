@@ -2,6 +2,7 @@ import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs'
 import cloudinary from '../lib/cloudinary.js'
+import { removeLocalFile } from "../lib/multer.js";
 
 const register = async (req, res) => {
     const { email, firstName, lastName, phone, password } = req.body;
@@ -101,36 +102,38 @@ const logout = async (req, res) => {
 }
 
 const updateProfile = async (req, res) => {
-  try {
-    const { fatherName, Dob, Class, address } = req.body;
-    const userId = req.user._id;
+    try {
+        const { fatherName, Dob, Class, address } = req.body;
+        const userId = req.user._id;
 
-    if (!req.file) {
-      return res.status(400).json({ message: "Profile pic is required" });
+        if (!req.file) {
+            return res.status(400).json({ message: "Profile pic is required" });
+        }
+
+        const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
+            upload_preset: "unsigned_profile_upload",
+            folder: "darpan_school",
+        });
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {
+                userPic: uploadResponse.secure_url,
+                fatherName,
+                Dob,
+                Class,
+                address,
+            },
+            { new: true }
+        ).select('-password');
+        removeLocalFile(req.file.path);
+        return res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+    } catch (error) {
+        console.error("Error in update profile:", error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    } finally {
+        removeLocalFile(req.file.path);
     }
-
-    const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
-      upload_preset: "unsigned_profile_upload",
-      folder: "darpan_school",
-    });
-
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        userPic: uploadResponse.secure_url,
-        fatherName,
-        Dob,
-        Class,
-        address,
-      },
-      { new: true }
-    ).select('-password');
-
-    return res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
-  } catch (error) {
-    console.error("Error in update profile:", error.message);
-    return res.status(500).json({ message: "Internal server error" });
-  }
 };
 
 
