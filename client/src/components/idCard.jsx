@@ -2,12 +2,7 @@ import React from 'react'
 import test1 from '../assets/test1.jpg'
 import { useSelector } from 'react-redux';
 const IdCard = ({
-    name = "NIHAL ALI",
-    fatherName = "NIYAMAT ALI",
-    dob = "12/02/202",
-    className = "8",
-    mob = "6388979713",
-    address = "MURKA MAU CHITRAKOOT U.P",
+    
     session = "2025-26",
     school = "NEW DARPAN PUBLIC SCHOOL",
     location = "MURKA MAU CHITRAKOOT (U.P.)",

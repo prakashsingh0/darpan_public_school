@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../features/slice/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../lib/axios';
 
 const Form = () => {
     const navigate = useNavigate();
@@ -32,8 +33,8 @@ const Form = () => {
                 },
             };
 
-            const res = await axios.put(
-                'http://localhost:8000/api/auth/v1/updates',
+            const res = await axiosInstance.put(
+                `updates`,
                 formData,
                 config
             );

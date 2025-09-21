@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../features/slice/authSlice'; 
 import {Link, useNavigate} from 'react-router-dom'
+import {axiosInstance} from '../lib/axios'
 const Login = ({ 
   school = "NEW DARPAN PUBLIC SCHOOL",
   location = "MURKA MAU CHITRAKOOT (U.P.)",
@@ -22,7 +23,7 @@ const Login = ({
 
     try {
       const body = { email, password };
-      const res = await axios.post("http://localhost:8000/api/auth/v1/login", body);
+      const res = await axiosInstance.post("login", body);
 
       // Dispatch login success with user and token from response
       dispatch(loginSuccess({ user: res?.data?.user, token: res?.data?.token }));

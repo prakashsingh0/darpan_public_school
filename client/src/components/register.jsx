@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { axiosInstance } from '../lib/axios';
 
 const Register = ({
   school = "NEW DARPAN PUBLIC SCHOOL",
@@ -20,7 +21,7 @@ const Register = ({
     setError(null);
     try {
       const body = { lastName, firstName, email, phone, password };
-      const res = await axios.post("http://localhost:8000/api/auth/v1/signin", body);
+      const res = await axiosInstance.post(`$signin`, body);
       alert(res.data.message);
       navigate('/login');
     } catch (error) {
