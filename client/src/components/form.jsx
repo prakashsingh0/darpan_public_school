@@ -1,16 +1,53 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess } from '../features/slice/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Form = () => {
-    const [image, setImage] = useState(null);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.auth.token);
+    const [isLoading,setIsLoading] = useState(false)
+    const [userPic, setImage] = useState(null);
     const [fatherName, setFatherName] = useState('');
     const [Dob, setDob] = useState('');
-    const [Class, setClass] = useState('');
+    const [standarded, setStandarded] = useState(null); // number (not string)
     const [address, setAddress] = useState('');
 
-    const handleform = (e) => {
-        e.preventDefault(); // Prevent page reload
-        console.log(image, fatherName, Dob, Class, address);
-        alert(`Image: ${image?.name || 'No Image'}, Father Name: ${fatherName}, DOB: ${Dob}, Class: ${Class}, Address: ${address}`);
+    const handleform = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append('userPic', userPic);
+            formData.append('fatherName', fatherName);
+            formData.append('Dob', Dob);
+            formData.append('Standarded', standarded); //  number now
+            formData.append('address', address);
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            };
+
+            const res = await axios.put(
+                'http://localhost:8000/api/auth/v1/updates',
+                formData,
+                config
+            );
+
+            dispatch(loginSuccess({ user: res?.data?.user }));
+            navigate('/profile');
+        } catch (error) {
+            console.log(error);
+        }
+
+        console.log(userPic, fatherName, Dob, standarded, address);
+        alert(
+            `Image: ${userPic?.name || 'No Image'}, Father Name: ${fatherName}, DOB: ${Dob}, Class: ${standarded}, Address: ${address}`
+        );
     };
 
     return (
@@ -43,8 +80,8 @@ const Form = () => {
                     <label className="font-extrabold mt-2">Class</label>
                     <select
                         className="border-2 rounded font-bold px-1"
-                        value={Class}
-                        onChange={(e) => setClass(e.target.value)}
+                        value={standarded || ''} // fallback empty string
+                        onChange={(e) => setStandarded(parseInt(e.target.value))} //  ensure number
                     >
                         <option value="">Select Class</option>
                         {[...Array(12)].map((_, i) => (
@@ -53,7 +90,6 @@ const Form = () => {
                             </option>
                         ))}
                     </select>
-
 
                     <label className="font-extrabold mt-2">Address</label>
                     <input
@@ -66,8 +102,9 @@ const Form = () => {
                     <button
                         className="my-4 mx-auto font-bold px-5 py-2 border rounded w-1/2 bg-blue-400 hover:bg-green-400 cursor-pointer"
                         type="submit"
+                        onClick={()=>setIsLoading(true)}
                     >
-                        Submit
+                       {isLoading ? "Loading..." : "Submit"}
                     </button>
                 </form>
             </div>

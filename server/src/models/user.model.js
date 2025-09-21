@@ -20,7 +20,12 @@ const userSchema = mongoose.Schema(
       required: false,
       default: ''
     },
-    Class: {
+    Dob:{
+      type:String,
+      required:false,
+      default:Date()
+    },
+    Standarded: {
       type: Number,
       required: false,
       default: null

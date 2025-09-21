@@ -42,12 +42,12 @@ const register = async (req, res) => {
 
             await newUser.save();
 
-            res.status(201).json({
+            res.status(201).json({message:"Register Successfully",user:{
                 _id: newUser._id,
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
                 email: newUser.email,
-            });
+            }});
         } else {
             res.status(400).json({ message: "Invalid user data" });
         }
@@ -69,20 +69,21 @@ const login = async (req, res) => {
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: "Invailed Credentials" });
         }
-        generateToken(user._id, res)
+       const token= generateToken(user._id, res)
 
-        res.status(200).json({
+        res.status(200).json({token,user:{
             _id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
             fatherName: user.fatherName,
             Dob: user.Dob,
+            Standarded:user.Standarded,
             phone: user.phone,
             userPic: user.userPic,
             role: user.role,
             address: user.address
-        });
+        }});
     } catch (error) {
         console.log("Error in login controller", error.message);
         res.status(500).json({ message: "Internal Server Error" })
@@ -103,7 +104,7 @@ const logout = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
-        const { fatherName, Dob, Class, address } = req.body;
+        const { fatherName, Dob, Standarded, address } = req.body;
         const userId = req.user._id;
 
         if (!req.file) {
@@ -121,12 +122,14 @@ const updateProfile = async (req, res) => {
                 userPic: uploadResponse.secure_url,
                 fatherName,
                 Dob,
-                Class,
+                Standarded,
                 address,
             },
             { new: true }
         ).select('-password');
         removeLocalFile(req.file.path);
+      
+        
         return res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
     } catch (error) {
         console.error("Error in update profile:", error.message);
