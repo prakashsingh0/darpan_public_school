@@ -50,6 +50,12 @@ const userSchema = mongoose.Schema(
       default: 'student',
       required: false
     },
+    status:{
+      type:String,
+      enum:['Pending','Approved','Cancel'],
+      default:'Pending',
+      required:false
+    },
     address:{
         type:String,
         required:false,

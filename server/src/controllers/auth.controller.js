@@ -82,7 +82,8 @@ const login = async (req, res) => {
             phone: user.phone,
             userPic: user.userPic,
             role: user.role,
-            address: user.address
+            address: user.address,
+            status:user.status,
         }});
     } catch (error) {
         console.log("Error in login controller", error.message);

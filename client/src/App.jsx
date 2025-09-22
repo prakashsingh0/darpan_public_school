@@ -10,6 +10,8 @@ import {
   Route,
   Navigate
 } from 'react-router-dom';
+import Students from './components/admin/students';
+import NewStudent from './components/admin/newStudent';
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -25,7 +27,7 @@ function App() {
             !isAuthenticated ? (
               <Navigate to="/login" replace />
             ) : user?.role === 'student' ? (
-              !user?.Standarded || !user.address ||!user.Dob ? (
+              !user?.Standarded || !user.address || !user.Dob ? (
                 <Navigate to="/form" replace />
               ) : (
                 <Navigate to="/profile" replace />
@@ -55,7 +57,11 @@ function App() {
 
         {/* Admin Routes */}
         {isAuthenticated && user?.role === 'admin' && (
-          <Route path="/admin" element={<Home />} />
+          <Route path="/admin" element={<Home />}>
+            <Route index element={<Students />} /> {/* default */}
+            <Route path="students" element={<Students />} />
+            <Route path="new-student" element={<NewStudent />} />
+          </Route>
         )}
 
         {/* Fallback route for 404 */}

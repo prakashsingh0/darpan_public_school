@@ -2,14 +2,14 @@ import React from 'react'
 import test1 from '../assets/test1.jpg'
 import { useSelector } from 'react-redux';
 const IdCard = ({
-    
+
     session = "2025-26",
     school = "NEW DARPAN PUBLIC SCHOOL",
     location = "MURKA MAU CHITRAKOOT (U.P.)",
 }) => {
-    const authUser = useSelector((state)=>state.auth.user);
+    const authUser = useSelector((state) => state.auth.user);
     console.log(authUser);
-    
+
     let imgSrc = test1;
 
 
@@ -28,7 +28,7 @@ const IdCard = ({
                 </span>
             </div>
             <div className="text-base space-y-1">
-                <div><span className="font-bold">NAME :</span> <span className="text-red-600 font-semibold">{authUser.firstName+' '+authUser.lastName}</span></div>
+                <div><span className="font-bold">NAME :</span> <span className="text-red-600 font-semibold">{authUser.firstName + ' ' + authUser.lastName}</span></div>
                 <div><span className="font-bold">F. NAME :</span> <span className="text-red-600 font-semibold">{authUser.fatherName}</span></div>
                 <div><span className="font-bold">D.O.B. :</span> <span className="text-red-600 font-semibold">{authUser.Dob}</span></div>
                 <div><span className="font-bold">CLASS :</span> <span className="text-red-600 font-semibold">{authUser.Standarded}</span></div>
@@ -36,7 +36,21 @@ const IdCard = ({
                 <div><span className="font-bold">ADD :</span> <span className="text-red-600 font-semibold">{authUser.address}</span></div>
             </div>
             <div className="mt-7 text-left text-sm italic">
-                Principal Sign.
+                Principal Sign.{' '}
+                <span
+                    style={{
+                        color:
+                            authUser.status === 'Pending'
+                                ? 'orange'
+                                : authUser.status === 'cancel'
+                                    ? 'red'
+                                    : authUser.status === 'Approved'
+                                        ? 'green'
+                                        : 'black',
+                    }}
+                >
+                    {authUser.status}
+                </span>
             </div>
         </div>
     )
