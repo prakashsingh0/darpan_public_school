@@ -32,6 +32,7 @@ const Students = () => {
           <option value="phone">Phone</option>
           <option value="email">Email</option>
           <option value="Standarded">Class</option>
+          <option value="fatherName">fatherName</option>
         </select>
         <input
           className="border rounded px-2 py-1"
