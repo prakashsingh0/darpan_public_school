@@ -21,7 +21,7 @@ const Register = ({
     setError(null);
     try {
       const body = { lastName, firstName, email, phone, password };
-      const res = await axiosInstance.post(`$signin`, body);
+      const res = await axiosInstance.post(`signin`, body);
       alert(res.data.message);
       navigate('/login');
     } catch (error) {
