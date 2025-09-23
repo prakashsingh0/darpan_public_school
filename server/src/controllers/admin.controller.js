@@ -40,6 +40,27 @@ const Students = async (req, res) => {
   }
 
 }
+
+const Rejected_Students = async (req, res) => {
+  try {
+    const isAdmin = req.user.role;
+
+
+    if (isAdmin !== 'admin') {
+      return res.status(403).json({ message: "Unauthorized - Access denied" });
+    }
+
+    // Find users with status: 'Pending' and role: 'student' 
+    const students = await User.find({ status: 'Cancel', role: 'student' }).select('-password');
+    // console.log(newStudents);
+
+    return res.status(200).json(students);
+  } catch (error) {
+    console.log("Error in Student controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+
+}
 const Approved = async (req, res) => {
   
   const isAdmin = req.user.role;
@@ -118,4 +139,4 @@ const Deny = async (req, res) => {
   }
 };
 
-export { NewStudent, Students, Approved, Deny }
+export { NewStudent, Students, Approved, Deny ,Rejected_Students}

@@ -12,6 +12,7 @@ import {
 } from 'react-router-dom';
 import Students from './components/admin/students';
 import NewStudent from './components/admin/newStudent';
+import Rejected from './components/admin/rejected';
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -61,6 +62,7 @@ function App() {
             <Route index element={<Students />} /> {/* default */}
             <Route path="students" element={<Students />} />
             <Route path="new-student" element={<NewStudent />} />
+            <Route path="Rejected-student" element={<Rejected />} />
           </Route>
         )}
 

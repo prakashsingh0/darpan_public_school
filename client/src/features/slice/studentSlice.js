@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   students: [],
   newstudents: [],
+  rejectedStudent: [],
   loading: false,
   error: null,
 };
@@ -18,11 +19,15 @@ const studentSlice = createSlice({
     getNewStudents(state, action) {
       state.loading = false;
       state.newstudents = action.payload.newstudents || [];
-      
+
+    },
+    getRejectedStudent(state, action) {
+      state.loading = false;
+      state.rejectedStudent = action.payload.rejectedStudent || [];
     },
     getStudents(state, action) {
       state.loading = false;
-     
+
       state.students = action.payload.student || [];
     },
     getFailure(state, action) {
@@ -32,5 +37,5 @@ const studentSlice = createSlice({
   }
 });
 
-export const { getFailure, getStart, getStudents,getNewStudents } = studentSlice.actions;
+export const { getFailure, getStart, getStudents, getNewStudents,getRejectedStudent } = studentSlice.actions;
 export default studentSlice.reducer;
