@@ -49,8 +49,9 @@ const Nav = () => {
 
   return (
     <div className='flex justify-between w-full border-2 border-black-50 py-2 px-2 bg-blue-500 text-white'>
-      <div>
-        Logo {" "}
+      <div className='flex font-extrabold'  style={{alignItems:'center'}}>
+        
+        <img src={user?.userPic} className='h-15 w-15 rounded-4xl mr-1 object-cover'/>
         {user?.firstName} {user?.lastName}
       </div>
       <div className='flex items-center'>
