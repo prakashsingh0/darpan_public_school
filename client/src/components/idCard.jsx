@@ -1,5 +1,5 @@
 import React from 'react'
-import test1 from '../assets/test1.jpg'
+
 import { useSelector } from 'react-redux';
 const IdCard = ({
 
@@ -10,7 +10,7 @@ const IdCard = ({
     const authUser = useSelector((state) => state.auth.user);
     console.log(authUser);
 
-    let imgSrc = test1;
+   
 
 
     return (
