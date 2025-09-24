@@ -13,6 +13,16 @@ const Rejected = () => {
           console.error('Confirm error:', error);
         }
       };
+      const deleteHandler =async(id)=>{
+        try {
+          const res = await axiosInstance.delete(`/admin/delete/${id}`);
+          console.log(res.data.message);
+          
+        } catch (error) {
+         console.log(error);
+          
+        }
+      }
   return (
      <div className="flex flex-col p-4">
       <div className="overflow-auto w-full">
@@ -69,12 +79,12 @@ const Rejected = () => {
                     >
                       Confirm
                     </button>
-                    {/* <button
+                    <button
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 btn"
-                      onClick={() => onDeny(stu._id)}
+                      onClick={() => deleteHandler(stu._id)}
                     >
-                      Cancel
-                    </button> */}
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))

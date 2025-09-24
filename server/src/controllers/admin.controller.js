@@ -101,6 +101,34 @@ const Approved = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+const DeleteUser = async (req, res) => {
+  const isAdmin = req.user.role;
+  const studentId = req.params.id;
+
+  // Only admin can access this
+  if (isAdmin !== 'admin') {
+    return res.status(403).json({ message: 'Access denied' });
+  }
+  const isExistsAdmin = await User.findById(req.user._id);
+  if (!isExistsAdmin || isExistsAdmin.role !== 'admin') {
+    return res.status(403).json({ message: 'Unauthorized - Access denied' });
+  }
+  try {
+    const student = await User.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    if (student.role !== 'student') {
+      return res.status(400).json({ message: "User is not a student" });
+    }
+    await User.findByIdAndDelete(student._id);
+    return res.status(200).json({ message: "Student deleted successfully" });
+  } catch (error) {
+    console.error("Error Delete User controller student:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 const Deny = async (req, res) => {
   const isAdmin = req.user.role;
   const studentId = req.params.id;
@@ -139,4 +167,4 @@ const Deny = async (req, res) => {
   }
 };
 
-export { NewStudent, Students, Approved, Deny ,Rejected_Students}
+export { NewStudent, Students, Approved, Deny ,Rejected_Students,DeleteUser}
