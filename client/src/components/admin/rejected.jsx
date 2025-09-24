@@ -1,24 +1,29 @@
 import React from 'react'
 import { axiosInstance } from '../../lib/axios';
 import { useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Rejected = () => {
     const students = useSelector((state)=>state.student.rejectedStudent)
     const confirmHandler = async (id) => {
         try {
           const res = await axiosInstance.put(`/admin/confirm/${id}`);
+          toast.success(res?.data?.message+" Student Name : "+ res.data.student.firstName)
           console.log('Student confirmed:', res.data);
           // Consider updating local state or refetching to reflect changes
         } catch (error) {
+          toast.error(error?.response?.Date?.message);
           console.error('Confirm error:', error);
         }
       };
       const deleteHandler =async(id)=>{
         try {
           const res = await axiosInstance.delete(`/admin/delete/${id}`);
+          toast.success(res?.data?.message+" Student Name : "+ res.data.student.firstName)
           console.log(res.data.message);
           
         } catch (error) {
+           toast.error(error?.response?.Date?.message)
          console.log(error);
           
         }
@@ -92,6 +97,7 @@ const Rejected = () => {
           </tbody>
         </table>
       </div>
+      <Toaster />
     </div>
   )
 }

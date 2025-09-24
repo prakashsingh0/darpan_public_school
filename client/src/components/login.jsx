@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './login.css';
-import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../features/slice/authSlice'; 
 import {Link, useNavigate} from 'react-router-dom'
@@ -28,10 +29,14 @@ const Login = ({
       // Dispatch login success with user and token from response
       dispatch(loginSuccess({ user: res?.data?.user, token: res?.data?.token }));
       navigate('/')
+      toast.success(res?.data?.message+" "+res?.data?.user?.firstName)
       console.log('Login submitted:', res?.data?.user);
     } catch (error) {
+      console.log(error);
+      
+      toast.error(error.response?.data?.message)
       dispatch(loginFailure(error.message || 'Login failed'));
-      alert(error.message || 'Login failed');
+      // alert(error.message || 'Login failed');
     }
   };
 
@@ -71,6 +76,7 @@ const Login = ({
 
         <Link to={'/signin'}>Don't have Acount</Link>
       </div>
+      <Toaster />
     </div>
   );
 };

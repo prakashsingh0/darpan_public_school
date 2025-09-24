@@ -13,6 +13,7 @@ import {
 import Students from './components/admin/students';
 import NewStudent from './components/admin/newStudent';
 import Rejected from './components/admin/rejected';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -69,6 +70,7 @@ function App() {
         {/* Fallback route for 404 */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+       <Toaster />
     </Router>
   );
 }

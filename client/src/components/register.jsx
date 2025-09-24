@@ -3,6 +3,7 @@ import './login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { axiosInstance } from '../lib/axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Register = ({
   school = "NEW DARPAN PUBLIC SCHOOL",
@@ -22,10 +23,12 @@ const Register = ({
     try {
       const body = { lastName, firstName, email, phone, password };
       const res = await axiosInstance.post(`signin`, body);
-      alert(res.data.message);
+      // alert(res.data.message);
+      toast.success(res?.data?.message)
       navigate('/login');
     } catch (error) {
       setError(error.response?.data?.message || 'Registration failed');
+      toast.error(error?.response?.data?.message);
       console.log(error);
     }
   };
@@ -96,6 +99,7 @@ const Register = ({
 
         <Link to={'/login'}>Already have an account? Login</Link>
       </div>
+      <Toaster />
     </div>
   );
 };

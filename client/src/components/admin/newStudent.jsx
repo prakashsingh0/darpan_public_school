@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { axiosInstance } from '../../lib/axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 const NewStudent = () => {
   const students = useSelector((state) => state?.student?.newstudents) || [];
@@ -8,9 +9,11 @@ const NewStudent = () => {
   const confirmHandler = async (id) => {
     try {
       const res = await axiosInstance.put(`/admin/confirm/${id}`);
+      toast.success(res?.data?.message+" Student Name : "+ res.data.student.firstName)
       console.log('Student confirmed:', res.data);
       // Consider updating local state or refetching to reflect changes
     } catch (error) {
+       toast.error(error?.response?.Date?.message)
       console.error('Confirm error:', error);
     }
   };
@@ -18,9 +21,11 @@ const NewStudent = () => {
   const onDeny = async(id) => {
      try {
       const res = await axiosInstance.put(`/admin/deny/${id}`);
+      toast.success(res?.data?.message+" Student Name : "+ res.data.student.firstName)
       console.log('Student Rejected:', res.data);
       // Consider updating local state or refetching to reflect changes
     } catch (error) {
+      toast.error(error?.response?.Date?.message)
       console.error('Confirm error:', error);
     }
   };
@@ -94,6 +99,7 @@ const NewStudent = () => {
           </tbody>
         </table>
       </div>
+      <Toaster />
     </div>
   );
 };
